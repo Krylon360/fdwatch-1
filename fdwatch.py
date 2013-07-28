@@ -1,10 +1,12 @@
 #!/usr/bin/python
 #! -*- coding: utf-8
 
-from sys import argv
+from sys import argv, exit
 from time import sleep
 from os import path
 
+if len(argv) != 3:
+    exit("Usage: %s <PID> <FD_NUMBER>" % (argv[0]))
 pid = argv[1]
 fdno = argv [2]
 
