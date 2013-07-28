@@ -33,11 +33,11 @@ def humanize_bytes(bytes, precision=1):
     '1.3 GB'
     """
     abbrevs = (
-        (1<<50L, 'PB'),
-        (1<<40L, 'TB'),
-        (1<<30L, 'GB'),
-        (1<<20L, 'MB'),
-        (1<<10L, 'kB'),
+        (1<<50, 'PB'),
+        (1<<40, 'TB'),
+        (1<<30, 'GB'),
+        (1<<20, 'MB'),
+        (1<<10, 'kB'),
         (1, 'bytes')
     )
     if bytes == 1:
@@ -67,10 +67,10 @@ def elapsed_time(seconds, suffixes=['y','w','d','h','m','s'], add_s=False, separ
         # for each time piece, grab the value and remaining seconds, and add it to
         # the time string
         for suffix, length in parts:
-                value = seconds / length
+                value = int(seconds / length)
                 if value > 0:
                         seconds = seconds % length
-                        time.append('%s%s' % (str(value),
+                        time.append('%d%s' % (value,
                                                (suffix, (suffix, suffix + 's')[value > 1])[add_s]))
                 if seconds < 1:
                         break
