@@ -3,7 +3,7 @@ fdwatch
 
 A tool for watching a given file descriptor.
 
-This program is intended for _*Linux*_ users that would like to watch how fast
+This program is intended for **Linux** users that would like to watch how fast
 is a file being read or written to and - in case of a read - when will the
 operation be completed. This can for example be useful during a compression of
 a file, when there's no ETA shown (like in 7zip's case it was actually the
@@ -21,8 +21,8 @@ executable permissions, like this:
     cp fdwatch.py /usr/bin/fdwatch
     chmod +x /usr/bin/fdwatch
 
-This usually has to be done using the administrator account (use "sudo -i" or
-"su" to switch to it - in case of problems, seek help from your Linux
+This usually has to be done using the administrator account (use `sudo -i` or
+`su` to switch to it - in case of problems, seek help from your Linux
 distrubution's provider (usually that means "RTFM" - Read The Fabulous
 Manual). Once completed, your terminal should react to a new command -
 "fdwatch". Sometimes before the first use you might need to re-run the command
@@ -40,8 +40,9 @@ process ID and 3 is the file descriptor number):
 
     python fdwatch.py 1234 3
 
-To find out the process ID of the program you're running, you can use ps and
-grep programs. For example, to find out the process ID of a running 7z program:
+To find out the process ID of the program you're running, you can use `ps` and
+`grep` programs. For example, to find out the process ID of a running `7z`
+program:
 
     d33tah@d33tah-pc:/home/d33tah$ ps waux | grep 7z
     d33tah   20563  0.0  0.0   9528   988 pts/3    S+   23:28   0:00 /bin/sh /usr/bin/7z a traceroute.7z traceroute
@@ -50,7 +51,7 @@ grep programs. For example, to find out the process ID of a running 7z program:
 
 Process ID's are in the second column. The last line is irrelevant, we should
 probably look at processes number 20563 and 20564. To list the file descriptors
-and the files they point to, we'll use ls -l, like this:
+and the files they point to, we'll use `ls -l`, like this:
 
     d33tah@d33tah-pc:/home/d33tah$ ls -l /proc/20563/fd
     total 0
@@ -68,7 +69,7 @@ and the files they point to, we'll use ls -l, like this:
 
 The first command didn't yield any interesting results, but the second shows us
 the two files we'd like to watch - /mnt/sda9/d33tah/traceroute and
-/mnt/sda9/d33tah/traceroute.7z. The "4 -> /mnt/sda9/d33tah/traceroute" line
+`/mnt/sda9/d33tah/traceroute.7z. The `4 -> /mnt/sda9/d33tah/traceroute` line
 means that the file is open with file descriptor number 4. Now, that's enough
 to start fdwatch. To make it estimate how long will the compression take, run
 it now (your current working directory must contain fdwatch.py - if it doesn't,
