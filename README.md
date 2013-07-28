@@ -69,7 +69,7 @@ and the files they point to, we'll use `ls -l`, like this:
 
 The first command didn't yield any interesting results, but the second shows us
 the two files we'd like to watch - /mnt/sda9/d33tah/traceroute and
-`/mnt/sda9/d33tah/traceroute.7z. The `4 -> /mnt/sda9/d33tah/traceroute` line
+/mnt/sda9/d33tah/traceroute.7z. The `4 -> /mnt/sda9/d33tah/traceroute` line
 means that the file is open with file descriptor number 4. Now, that's enough
 to start fdwatch. To make it estimate how long will the compression take, run
 it now (your current working directory must contain fdwatch.py - if it doesn't,
