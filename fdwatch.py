@@ -5,11 +5,6 @@ from sys import argv, exit
 from time import sleep
 from os import path
 
-if len(argv) != 3:
-    exit("Usage: %s <PID> <FD_NUMBER>" % (argv[0]))
-pid = argv[1]
-fdno = argv [2]
-
 def humanize_bytes(bytes, precision=1):
     """Return a humanized string representation of a number of bytes.
 
@@ -53,7 +48,7 @@ def elapsed_time(seconds, suffixes=['y','w','d','h','m','s'], add_s=False, separ
         """
         # the formatted time string to be returned
         time = []
- 
+
         # the pieces of time to iterate over (days, hours, minutes, etc)
         # - the first piece in each tuple is the suffix (d, h, w)
         # - the second piece is the length in seconds (a day is 60s * 60m * 24h)
@@ -63,7 +58,7 @@ def elapsed_time(seconds, suffixes=['y','w','d','h','m','s'], add_s=False, separ
                   (suffixes[3], 60 * 60),
                   (suffixes[4], 60),
                   (suffixes[5], 1)]
- 
+
         # for each time piece, grab the value and remaining seconds, and add it to
         # the time string
         for suffix, length in parts:
@@ -74,22 +69,29 @@ def elapsed_time(seconds, suffixes=['y','w','d','h','m','s'], add_s=False, separ
                                                (suffix, (suffix, suffix + 's')[value > 1])[add_s]))
                 if seconds < 1:
                         break
- 
+
         return separator.join(time)
 
-while 1:
-  fd = open("/proc/%s/fdinfo/%s" % (pid,fdno))
-  old_stat = float ( fd.readline()[5:].strip("\n") )
-  size = path.getsize( "/proc/%s/fd/%s" % (pid, fdno) )
-  sleep(1)
-  fd = open("/proc/%s/fdinfo/%s" % (pid,fdno))
-  new_stat = float ( fd.readline()[5:].strip("\n") )
+if __name__=="__main__":
+    if len(argv) != 3:
+        exit("Usage: %s <PID> <FD_NUMBER>" % (argv[0]))
+    pid = argv[1]
+    fdno = argv [2]
 
-  percent = "%0.2f%%" % (float(old_stat/size)*100)
-  delta = new_stat-old_stat
-  if delta==0:
-    continue
-  #speed = "%0.2f MiB/s" % (delta/1024**2)
-  speed = "%s/s" % humanize_bytes(delta)
-  eta = "ETA=%s" % elapsed_time(separator=' ',seconds=int((size - new_stat)/delta))
-  print "%s, %s, ETA: %s" % (percent,speed,eta)
+
+    while 1:
+        fd = open("/proc/%s/fdinfo/%s" % (pid,fdno))
+        old_stat = float ( fd.readline()[5:].strip("\n") )
+        size = path.getsize( "/proc/%s/fd/%s" % (pid, fdno) )
+        sleep(1)
+        fd = open("/proc/%s/fdinfo/%s" % (pid,fdno))
+        new_stat = float ( fd.readline()[5:].strip("\n") )
+
+        percent = "%0.2f%%" % (float(old_stat/size)*100)
+        delta = new_stat-old_stat
+        if delta==0:
+            continue
+        #speed = "%0.2f MiB/s" % (delta/1024**2)
+        speed = "%s/s" % humanize_bytes(delta)
+        eta = "ETA=%s" % elapsed_time(separator=' ',seconds=int((size - new_stat)/delta))
+        print("%s, %s, ETA: %s" % (percent,speed,eta))
