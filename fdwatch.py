@@ -85,6 +85,8 @@ while 1:
 
   percent = "%0.2f%%" % (float(old_stat/size)*100)
   delta = new_stat-old_stat
+  if delta==0:
+    continue
   #speed = "%0.2f MiB/s" % (delta/1024**2)
   speed = "%s/s" % humanize_bytes(delta)
   eta = "ETA=%s" % elapsed_time(separator=' ',seconds=int((size - new_stat)/delta))
